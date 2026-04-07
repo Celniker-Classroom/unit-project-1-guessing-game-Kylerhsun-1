@@ -1,4 +1,4 @@
-let name = prompt('What is your name?');
+var playerName = prompt('What is your name?');
 
 
 let now = new Date();
@@ -11,53 +11,72 @@ document.getElementById("date").textContent = date;
 
 
 
+let answer = 0;
+let geussCount = 0;
+let totalWins = 0;
+let scores = [];
+let totalGuesses = 0;
+let end = false;
 
-function $(id) {
-  return document.getElementById(id);
-}
-
-function setText(id, value) {
-  const element = $(id);
-  if (element) {
-    element.textContent = String(value);
+function endGame() {
+  document.getElementById("guessBtn").disabled = true;
+  document.getElementById("giveUpBtn").disabled = true;
+  document.getElementById("playBtn").disabled = false;
+  document.getElementById("wins").textContent = "Total wins: " + totalWins;
+  document.getElementById("guesses").textContent = "Total guesses: " + totalGuesses;
+  if (scores.length > 0) {
+    let avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+    document.getElementById("avgscore").textContent = "Average score: " + avgScore.toFixed(2);
   }
-}
-
-function getRandomNum(max) {
-  const value = parseInt(max, 10);
-  if (Number.isNaN(value) || value < 1) {
-    return 0;
-  }
-  return Math.floor(Math.random() * value) + 1;
-}
-
-let targetNumber = null;
-
-function play() {
-  const selected = document.querySelector('input[name="level"]:checked');
-  if (!selected) {
-    setText('msg', 'Please select a level first.');
-    return;
-  }
-
-  const difficulty = selected.value;
-  let levelName = 'Unknown';
-
-  if (difficulty === '3') {
-    levelName = 'Easy';
-  } else if (difficulty === '10') {
-    levelName = 'Medium';
-  } else if (difficulty === '100') {
-    levelName = 'Hard';
-  }
-
-  targetNumber = getRandomNum(difficulty);
-  setText('msg', `${levelName} selected. Guess a number between 1 and ${difficulty}.`);
-  $('guessBtn').disabled = false;
-  $('giveUpBtn').disabled = false;
-  $('guess').disabled = false;
-
-  console.log('Target number:', targetNumber);
-}
-
  
+}
+
+  
+
+
+
+document.getElementById("playBtn").addEventListener("click", function() {
+  let radios = document.getElementsByName("level");
+  let range = 3;
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      range = parseInt(radios[i].value);
+    }
+  }
+  answer = Math.floor(Math.random() * range) + 1;
+  geussCount = 0;     
+  document.getElementById("msg").textContent = playerName + ", guess a number between 1 and " + range;
+  document.getElementById("guess").value = "";
+  document.getElementById("guessBtn").disabled = false;
+  document.getElementById("giveUpBtn").disabled = false;
+  document.getElementById("playBtn").disabled = true;
+
+  let levelRadios = document.getElementsByName("level");
+  for (let i = 0; i < levelRadios.length; i++) {
+    levelRadios[i].disabled = true;
+} 
+});
+
+  document.getElementById("guessBtn").addEventListener("click", function() {
+  let guess = parseInt(document.getElementById("guess").value);
+  geussCount++;
+  totalGuesses++;
+
+    if (guess === answer) {
+     totalWins++;
+      document.getElementById("msg").textContent = "Congratulations " + playerName + "! You guessed the number in " + geussCount + " guesses. Your score: " + scores[scores.length - 1];
+      endGame();
+  } else if (guess < answer) {
+      document.getElementById("msg").textContent = "Too low! Try again.";
+  } else {
+      document.getElementById("msg").textContent = "Too high! Try again.";
+  }
+});
+
+document.getElementById("giveUpBtn").addEventListener("click", function() {
+  document.getElementById("msg").textContent = "The correct number was " + answer + ". Better luck next time!";
+  endGame();
+});
+
+
+
