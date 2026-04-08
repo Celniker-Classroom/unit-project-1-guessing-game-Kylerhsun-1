@@ -16,20 +16,20 @@ let geussCount = 0;
 let totalWins = 0;
 let scores = [];
 let totalGuesses = 0;
-let end = false;
+
 
 function endGame() {
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
-  document.getElementById("wins").textContent = "Total wins: " + totalWins;
-  document.getElementById("guesses").textContent = "Total guesses: " + totalGuesses;
-  if (scores.length > 0) {
-    let avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-    document.getElementById("avgscore").textContent = "Average score: " + avgScore.toFixed(2);
+  document.getElementById("wins").textContent = "Total wins: " + totalWins; 
+  document.getElementById("avgScore").textContent = "Your score: " + (1000 / geussCount).toFixed(2);
+  scores.push(1000 / geussCount); 
+  document.getElementById("fastest").textContent = "Fastest time: " + (1000 / Math.min(...scores)).toFixed(2);
+  document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)).toFixed(2);  
+  document.getElementsByName("leaderboard").textContent = "Leaderboard: " + playerName + " - " + (1000 / geussCount).toFixed(2) + " points";
   }
  
-}
 
   
 
@@ -64,7 +64,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
 
     if (guess === answer) {
      totalWins++;
-      document.getElementById("msg").textContent = "Congratulations " + playerName + "! You guessed the number in " + geussCount + " guesses. Your score: " + scores[scores.length - 1];
+      document.getElementById("msg").textContent = "Congratulations " + playerName + "! You guessed the number in " + geussCount + " guesses. Your score: " + (1000 / geussCount).toFixed(2);
       endGame();
   } else if (guess < answer) {
       document.getElementById("msg").textContent = "Too low! Try again.";
