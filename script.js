@@ -65,6 +65,7 @@ inputField.addEventListener("keydown", function(event) {
 
 //end game function
 function endGame() {
+  let scores = [...new Set(scores)]; 
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
