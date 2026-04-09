@@ -75,6 +75,15 @@ function endGame() {
   if (GiveUpClicked == false)  {
   scores.push(guessCount); 
   }
+  else {
+    if (range === 3) {
+    scores.push(3);
+
+    } else if (range === 10) {
+    scores.push(10);
+    } else if (range === 100) {
+    scores.push(100);
+    }
     document.getElementById("avgScore").textContent = "Your Average Score: " + (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
   document.getElementById("avgTime").textContent = "Average time: " + (times.reduce((a, b) => a + b, 0) / times.length).toFixed(2) + " seconds";
@@ -158,14 +167,6 @@ document.getElementById("playBtn").addEventListener("click", function() {
 document.getElementById("giveUpBtn").addEventListener("click", function() {
   document.getElementById("msg").textContent = "The correct number was " + answer + ". Better luck next time!";
   totalWins++;
-   if (range === 3) {
-    scores.push(3);
-
-  } else if (range === 10) {
-    scores.push(10);
-  } else if (range === 100) {
-    scores.push(100);
-  }
   GiveUpClicked = true; 
   endGame();
   
