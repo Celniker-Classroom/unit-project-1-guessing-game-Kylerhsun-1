@@ -12,23 +12,33 @@ playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCas
 
 
 
-
-
-
-
-
 //date and time
 let now = new Date();
-let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let days = ["st", "nd", "rd", "th"];
 let dayName = days[now.getDay()];
 let startTime = new Date().getTime(); 
 
-let date = dayName + ", " + (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear();
+
 document.getElementById("date").textContent = date;
 
 
+function updateTimer() {
+    let now = new Date().getTime();
+    let elapsed = (now - startTime) / 100; 
+    document.getElementById("clock").textContent = elapsed.toFixed(2);
+}
 
+function stopTimer() {
+    let now = new Date().getTime();
+    let elapsed = (now - startTime) / 1000; 
+    return elapsed;
+}
 
+function resetTimer() {
+    startTime = new Date().getTime();
+    document.getElementById("clock").textContent = "0.00";
+}
 
 
 
@@ -46,6 +56,7 @@ document.getElementById("date").textContent = date;
 let answer = 0;
 let guessCount = 0;
 let totalWins = 0;
+let times = [];
 let scores = [];
 let guesses = [];
 let totalGuesses = 0;
@@ -59,6 +70,8 @@ function endGame() {
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
+
+  stopTimer();
 
 
   document.getElementById("wins").textContent = "Total wins: " + totalWins; 
@@ -102,6 +115,8 @@ document.getElementById("playBtn").addEventListener("click", function() {
   for (let i = 0; i < levelRadios.length; i++) {
     levelRadios[i].disabled = true;
 } 
+
+updateTimer();
 });
 
 
@@ -117,7 +132,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
   }
     if (guess === answer) {
       totalWins++;
-      document.getElementById("msg").textContent = "Congratulations " + playerName + "! You guessed the number in " + guessCount + " guesses. Your score: " + (1000 / guessCount).toFixed(2);
+      document.getElementById("msg").textContent = "Correct! Congratulations " + playerName + "! You guessed the number in " + guessCount + " guesses. Your score: " + (1000 / guessCount).toFixed(2);
       endGame();
   } else if (guess < answer) {
       document.getElementById("msg").textContent = "Too low! Try again.";
