@@ -27,25 +27,29 @@ todayDate = months[now.getMonth()] + " " + now.getDate() + dayName + ", " + now.
 
 document.getElementById("date").textContent = todayDate;
 
+let animationId; // 1. Variable to store the animation ID
 
 function startTimer() {
     startTime = new Date().getTime();
-    updateTimer();  
-   
+    updateTimer();
 }
- 
-function updateTimer() {    
+
+function updateTimer() {
     let now = new Date().getTime();
-    let elapsed = (now - startTime) / 1000; 
+    let elapsed = (now - startTime) / 1000;
     document.getElementById("date").textContent = elapsed.toFixed(2);
-    requestAnimationFrame(updateTimer); 
+    
+    // 2. Store the request ID
+    animationId = requestAnimationFrame(updateTimer); 
 }
 
 function stopTimer() {
-    cancelAnimationFrame(updateTimer);
+    // 3. Cancel using the stored ID
+    cancelAnimationFrame(animationId); 
+    
+    // Optional: Keep the last displayed time
     times.push(parseFloat(document.getElementById("date").textContent));
-    document.getElementById("date").textContent = times.at(-1);
-}      
+}
 
 
 
@@ -84,17 +88,17 @@ function endGame() {
 
 
   document.getElementById("wins").textContent = "Total wins: " + totalWins; 
-  scores.push(); 
+  scores.push(guessCount); 
     document.getElementById("avgScore").textContent = "Your Average Score: " + Math.round(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
   document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(times.reduce((a, b) => a + b, 0) / times.length)).toFixed(2)
   document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
 
-  scores.sort(function(a, b) { return b - a; });
+  scores.sort(function(a, b) { return a - b; });
   let leaderboard = document.getElementsByName("leaderboard");
-  for (let i=0; i < leaderboard.length; i++) {
-    if (i > scores.length) {
-      leaderboard[i].textContent =  scores[i];
+  for (let i = 0; i < leaderboard.length; i++) {
+    if (i < scores.length) {
+      leaderboard[i].textContent = "Score: " + scores[i];
     } else {
       leaderboard[i].textContent = "";
     }
@@ -107,7 +111,6 @@ function endGame() {
 //when play button is clicked
 document.getElementById("playBtn").addEventListener("click", function() {
   let radios = document.getElementsByName("level");
-  let range = 3;
   for (let i = 0; i < radios.length; i++) {
     if (radios[i].checked) {
       range = parseInt(radios[i].value);
@@ -123,11 +126,10 @@ document.getElementById("playBtn").addEventListener("click", function() {
 
   let levelRadios = document.getElementsByName("level");
   for (let i = 0; i < levelRadios.length; i++) {
-    levelRadios[i].disabled = true;
+   
 } 
   
   startTimer();
- 
 });
 
 
@@ -143,7 +145,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
   }
     if (guess === answer) {
       totalWins++;
-      document.getElementById("msg").textContent = "Correct! Congratulations " + playerName + "! You guessed the number in " + guessCount + " guesses. Your score: " + (1000 / guessCount).toFixed(2);
+      document.getElementById("msg").textContent = "Correct! Congratulations " + playerName + "! You guessed the number in " + guessCount + " guesses.";
       endGame();
   } else if (guess < answer) {
       document.getElementById("msg").textContent = "Too low! Try again.";
@@ -168,8 +170,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
 document.getElementById("giveUpBtn").addEventListener("click", function() {
   document.getElementById("msg").textContent = "The correct number was " + answer + ". Better luck next time!";
   totalWins++;
-  endGame();
-  if (range === 3) {
+   if (range === 3) {
     scores.push(3);
 
   } else if (range === 10) {
@@ -177,6 +178,8 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
   } else if (range === 100) {
     scores.push(100);
   }
+  endGame();
+ 
 });
  
 
