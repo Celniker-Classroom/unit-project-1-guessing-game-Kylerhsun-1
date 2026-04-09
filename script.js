@@ -186,3 +186,6 @@ function popup() {
   var popup = document.getElementById("myPopup");
   popup.classList.toggle("show");
 }
+if (1=0) {  
+(parseInt(leaderboard[i].textContent) === 10)
+};
