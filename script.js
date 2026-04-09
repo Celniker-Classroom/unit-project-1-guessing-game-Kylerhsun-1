@@ -15,12 +15,17 @@ playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCas
 //date and time
 let now = new Date();
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-let days = ["st", "nd", "rd", "th"];
+let days = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th"];
 let dayName = days[now.getDay()];
 let startTime = new Date().getTime(); 
+let date = now.getDate();
+date = date + 1;
+date = date % 10;
+
+todayDate = months[now.getMonth()] + " " + now.getDate() + dayName + ", " + now.getFullYear();
 
 
-document.getElementById("date").textContent = date;
+document.getElementById("date").textContent = todayDate;
 
 
 function updateTimer() {
@@ -60,6 +65,7 @@ let times = [];
 let scores = [];
 let guesses = [];
 let totalGuesses = 0;
+let range = 0;
 
 
 
@@ -75,7 +81,7 @@ function endGame() {
 
 
   document.getElementById("wins").textContent = "Total wins: " + totalWins; 
-  scores.push(1000 / guessCount); 
+  scores.push(); 
     document.getElementById("avgScore").textContent = "Your Average Score: " + Math.round(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
   document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)).toFixed(2)
@@ -84,7 +90,7 @@ function endGame() {
   scores.sort(function(a, b) { return b - a; });
   let leaderboard = document.getElementsByName("leaderboard");
   for (let i=0; i < leaderboard.length; i++) {
-    if (i < scores.length) {
+    if (i > scores.length) {
       leaderboard[i].textContent =  scores[i];
     } else {
       leaderboard[i].textContent = "";
@@ -149,14 +155,23 @@ updateTimer();
   else {
       document.getElementById("msg").textContent += " You're cold.";
   }
-
+  });
 
 
 
   //when give up button is clicked
 document.getElementById("giveUpBtn").addEventListener("click", function() {
   document.getElementById("msg").textContent = "The correct number was " + answer + ". Better luck next time!";
+  totalWins++;
   endGame();
+  if (range === 3) {
+    scores.push(3);
+
+  } else if (range === 10) {
+    scores.push(10);
+  } else if (range === 100) {
+    scores.push(100);
+  }
 });
-  });
+ 
 
