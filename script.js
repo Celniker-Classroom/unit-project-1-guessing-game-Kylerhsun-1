@@ -65,7 +65,6 @@ inputField.addEventListener("keydown", function(event) {
 
 //end game function
 function endGame() {
-  let uniqueScores = scores.filter((item, index) => scores.indexOf(item) === index); 
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
@@ -82,11 +81,12 @@ function endGame() {
   document.getElementById("avgTime").textContent = "Average time: " + (times.reduce((a, b) => a + b, 0) / times.length).toFixed(2) + " seconds";
   document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
 
-  uniqueScores.sort(function(a, b) { return a - b; });
+  
+  scores.sort(function(a, b) { return b - a ; });
   let leaderboard = document.getElementsByName("leaderboard");
   for (let i = 0; i < leaderboard.length; i++) {
-    if (i < uniqueScores.length) {
-      leaderboard[i].textContent = "Score: " + uniqueScores[i];
+    if (i < scores.length) {
+      leaderboard[i].textContent = scores[i];
     } else {
       leaderboard[i].textContent = "";
     }
