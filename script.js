@@ -28,22 +28,27 @@ todayDate = months[now.getMonth()] + " " + now.getDate() + dayName + ", " + now.
 document.getElementById("date").textContent = todayDate;
 
 
-function updateTimer() {
+function startTimer() {
+    startTime = new Date().getTime();
+    updateTimer();  
+   
+}
+ 
+function updateTimer() {    
     let now = new Date().getTime();
-    let elapsed = (now - startTime) / 100; 
+    let elapsed = (now - startTime) / 1000; 
     document.getElementById("clock").textContent = elapsed.toFixed(2);
+    requestAnimationFrame(updateTimer); 
 }
 
 function stopTimer() {
-    let now = new Date().getTime();
-    let elapsed = (now - startTime) / 1000; 
-    return elapsed;
-}
+    cancelAnimationFrame(updateTimer);
+    times.push(parseFloat(document.getElementById("clock").textContent));
+    document.getElementById("clock").textContent = times.at(-1);
+}      
 
-function resetTimer() {
-    startTime = new Date().getTime();
-    document.getElementById("clock").textContent = "0.00";
-}
+
+
 
 
 
@@ -70,13 +75,11 @@ let range = 0;
 
 
 
-
 //end game function
 function endGame() {
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
-
   stopTimer();
 
 
@@ -84,8 +87,8 @@ function endGame() {
   scores.push(); 
     document.getElementById("avgScore").textContent = "Your Average Score: " + Math.round(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
-  document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)).toFixed(2)
-  document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...guesses));
+  document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(times.reduce((a, b) => a + b, 0) / times.length)).toFixed(2)
+  document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
 
   scores.sort(function(a, b) { return b - a; });
   let leaderboard = document.getElementsByName("leaderboard");
@@ -98,6 +101,7 @@ function endGame() {
   }
 }
  
+
 
   
 //when play button is clicked
@@ -121,8 +125,9 @@ document.getElementById("playBtn").addEventListener("click", function() {
   for (let i = 0; i < levelRadios.length; i++) {
     levelRadios[i].disabled = true;
 } 
-
-updateTimer();
+  
+  startTimer();
+ 
 });
 
 
