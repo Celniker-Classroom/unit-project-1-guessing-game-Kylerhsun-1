@@ -65,6 +65,7 @@ inputField.addEventListener("keydown", function(event) {
 
 //end game function
 function endGame() {
+  let uniqueScores = [...new Set(scores)];  
   document.getElementById("guessBtn").disabled = true;
   document.getElementById("giveUpBtn").disabled = true;
   document.getElementById("playBtn").disabled = false;
@@ -82,11 +83,11 @@ function endGame() {
   document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
 
   
-  scores.sort(function(a, b) { return b - a ; });
+  uniqueScores.sort(function(a, b) { return a - b ; });
   let leaderboard = document.getElementsByName("leaderboard");
   for (let i = 0; i < leaderboard.length; i++) {
-    if (i < scores.length) {
-      leaderboard[i].textContent = scores[i];
+    if (i < uniqueScores.length) {
+      leaderboard[i].textContent = uniqueScores[i];
     } else {
       leaderboard[i].textContent = "";
     }
