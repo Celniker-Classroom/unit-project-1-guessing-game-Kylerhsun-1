@@ -37,14 +37,14 @@ function startTimer() {
 function updateTimer() {    
     let now = new Date().getTime();
     let elapsed = (now - startTime) / 1000; 
-    document.getElementById("clock").textContent = elapsed.toFixed(2);
+    document.getElementById("date").textContent = elapsed.toFixed(2);
     requestAnimationFrame(updateTimer); 
 }
 
 function stopTimer() {
     cancelAnimationFrame(updateTimer);
-    times.push(parseFloat(document.getElementById("clock").textContent));
-    document.getElementById("clock").textContent = times.at(-1);
+    times.push(parseFloat(document.getElementById("date").textContent));
+    document.getElementById("date").textContent = times.at(-1);
 }      
 
 
