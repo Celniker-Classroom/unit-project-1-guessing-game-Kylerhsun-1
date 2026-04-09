@@ -29,7 +29,7 @@ function startTimer() {
 function updateTimer() {
     let now = new Date().getTime();
     let elapsed = (now - startTime) / 1000;
-    document.getElementById("date").textContent = elapsed.toFixed(2);
+    document.getElementById("date").textContent =+ elapsed.toFixed(2) + " seconds";
     animationId = requestAnimationFrame(updateTimer); 
 }
 
