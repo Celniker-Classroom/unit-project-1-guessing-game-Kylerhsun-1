@@ -4,14 +4,6 @@ playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCas
 
 
 
-
-
-
-
-
-
-
-
 //date and time
 let now = new Date();
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -51,17 +43,6 @@ function stopTimer() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 let answer = 0;
 let guessCount = 0;
 let totalWins = 0;
@@ -72,7 +53,15 @@ let totalGuesses = 0;
 let range = 0;
 let GiveUp = false;
 
+const inputField = document.getElementById("guess");
+const actionButton = document.getElementById("guessBtn");
 
+inputField.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter") {
+    document.getElementById("guessBtn" ).click();
+  }
+});
 
 //end game function
 function endGame() {
@@ -107,6 +96,7 @@ function endGame() {
   
 //when play button is clicked
 document.getElementById("playBtn").addEventListener("click", function() {
+  snackbar();
   let radios = document.getElementsByName("level");
   for (let i = 0; i < radios.length; i++) {
     if (radios[i].checked) {
@@ -181,4 +171,18 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
   
 });
  
+function darkmode() {
+   let element = document.body;
+   element.classList.toggle("dark-mode");
+}
 
+function snackbar() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+function popup() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}

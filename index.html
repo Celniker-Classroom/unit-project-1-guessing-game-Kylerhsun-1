@@ -3,6 +3,7 @@
   <head>
     <title>JavaScript Number Guessing Game</title>
     <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <p id="date"></p>
@@ -11,14 +12,17 @@
     <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
     <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
     <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
+    
 
     <button id="playBtn">Play</button>
+     <div class = "popup" onclick = "popup()" ><button onclick="darkmode()">Toggle dark mode</button>
+    <span class = "popuptext" id = "myPopup">Much Better</span></div>
 
     <h3 id="msg">Select a Level</h3>
     <input type="text" id="guess">
     <button id="guessBtn" disabled>Guess</button>
     <button id="giveUpBtn" disabled>Give Up</button>
-    <div id="clock"></div>
+    
 
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
@@ -32,5 +36,6 @@
       <li name="leaderboard">100</li>
       <li name="leaderboard">100</li>
     </ol>
+    <div id="snackbar">Good Luck</div>
   </body>
 </html>
