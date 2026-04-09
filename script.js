@@ -27,7 +27,7 @@ todayDate = months[now.getMonth()] + " " + now.getDate() + dayName + ", " + now.
 
 document.getElementById("date").textContent = todayDate;
 
-let animationId; // 1. Variable to store the animation ID
+let animationId;
 
 function startTimer() {
     startTime = new Date().getTime();
@@ -38,16 +38,11 @@ function updateTimer() {
     let now = new Date().getTime();
     let elapsed = (now - startTime) / 1000;
     document.getElementById("date").textContent = elapsed.toFixed(2);
-    
-    // 2. Store the request ID
     animationId = requestAnimationFrame(updateTimer); 
 }
 
 function stopTimer() {
-    // 3. Cancel using the stored ID
     cancelAnimationFrame(animationId); 
-    
-    // Optional: Keep the last displayed time
     times.push(parseFloat(document.getElementById("date").textContent));
 }
 
@@ -75,7 +70,7 @@ let scores = [];
 let guesses = [];
 let totalGuesses = 0;
 let range = 0;
-
+let GiveUp = false;
 
 
 
@@ -88,10 +83,12 @@ function endGame() {
 
 
   document.getElementById("wins").textContent = "Total wins: " + totalWins; 
+  if (GiveUpClicked == false)  {
   scores.push(guessCount); 
-    document.getElementById("avgScore").textContent = "Your Average Score: " + Math.round(scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+  }
+    document.getElementById("avgScore").textContent = "Your Average Score: " + (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
-  document.getElementById("avgTime").textContent = "Average time: " + (1000 / Math.round(times.reduce((a, b) => a + b, 0) / times.length)).toFixed(2)
+  document.getElementById("avgTime").textContent = "Average time: " + (times.reduce((a, b) => a + b, 0) / times.length).toFixed(2) + " seconds";
   document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
 
   scores.sort(function(a, b) { return a - b; });
@@ -130,6 +127,7 @@ document.getElementById("playBtn").addEventListener("click", function() {
 } 
   
   startTimer();
+  GiveUpClicked = false;
 });
 
 
@@ -178,8 +176,9 @@ document.getElementById("giveUpBtn").addEventListener("click", function() {
   } else if (range === 100) {
     scores.push(100);
   }
+  GiveUpClicked = true; 
   endGame();
- 
+  
 });
  
 
