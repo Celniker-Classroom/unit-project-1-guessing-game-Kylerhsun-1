@@ -1,7 +1,16 @@
 var playerName = prompt('What is your name?');
 playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
 
-
+let answer = 0;
+let guessCount = 0;
+let totalWins = 0;
+let times = [];
+let scores = [];
+let guesses = [];
+let totalGuesses = 0;
+let range = 0;
+let GiveUp = false;
+let elapsedTime = 0;
 
 
 //date and time
@@ -28,14 +37,14 @@ function startTimer() {
 
 function updateTimer() {
     let now = new Date().getTime();
-    let elapsed = (now - startTime) / 1000;
-    document.getElementById("date").textContent = todayDate + " " + elapsed.toFixed(2) + " seconds";
+    elapsedTime = (now - startTime) / 1000; 
+    document.getElementById("date").textContent = todayDate + " " + elapsedTime.toFixed(2) + " seconds";
     animationId = requestAnimationFrame(updateTimer); 
 }
 
 function stopTimer() {
     cancelAnimationFrame(animationId); 
-    times.push(parseFloat(document.getElementById("date").textContent));
+    times.push(elapsedTime); 
 }
 
 
@@ -43,15 +52,8 @@ function stopTimer() {
 
 
 
-let answer = 0;
-let guessCount = 0;
-let totalWins = 0;
-let times = [];
-let scores = [];
-let guesses = [];
-let totalGuesses = 0;
-let range = 0;
-let GiveUp = false;
+
+
 
 const inputField = document.getElementById("guess");
 const actionButton = document.getElementById("guessBtn");
@@ -76,11 +78,12 @@ function endGame() {
   scores.push(guessCount); 
   }
    
-    document.getElementById("avgScore").textContent = "Your Average Score: " + (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+    document.getElementById("avgScore").textContent = "Average Score: " + (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
   guesses.push(guessCount);
-  document.getElementById("avgTime").textContent = "Average time: " + (times.reduce((a, b) => a + b, 0) / times.length).toFixed(2) + " seconds";
-  document.getElementById("fastest").textContent = "Fastest Game: " + (Math.min(...times));
-
+  document.getElementById("avgTime").textContent = "Average Time: " + (times.reduce((a, b) => a + b, 0) / times.length).toFixed(2) + " seconds";  
+  let fastestTime = times.length > 0 ? Math.min(...times) : 0;
+  document.getElementById("fastest").textContent = "Fastest time: " + fastestTime.toFixed(2) + " seconds";
+  
   
   scores.sort(function(a, b) { return a - b ; });
   let leaderboard = document.getElementsByName("leaderboard");
