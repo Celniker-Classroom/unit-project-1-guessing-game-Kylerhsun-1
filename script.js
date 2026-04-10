@@ -37,8 +37,8 @@ function startTimer() {
 
 function updateTimer() {
     let now = new Date().getTime();
-    elapsedTime = (now - startTime) / 1000; 
-    document.getElementById("date").textContent = elapsedTime.toFixed(2);
+    elapsedTime = (now - startTime) / 1000;  
+    document.getElementById("date").textContent = elapsedTime.toFixed(2) + " " + todayDate;
     animationId = requestAnimationFrame(updateTimer); 
 }
 
